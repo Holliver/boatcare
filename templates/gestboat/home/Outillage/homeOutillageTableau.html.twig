@@ -1,0 +1,77 @@
+{% block body %}
+    {% if bateau.outillages|length == 0 %}
+        <p>
+            <a href="{{ path('outillage_new', {'bateauId': bateau.id}) }}"
+               data-toggle="tooltip"
+               data-placement="top"
+               title="Ajouter de l'outillage {{ bateau.nom }}">
+                <i class="bi-plus-circle-fill"></i>
+            </a>
+        </p>
+    {% endif %}
+    {% for outillage in bateau.outillages %}
+        <table style="width: 100%;margin-bottom: 0px" class="table table-bordered">
+            <tr>
+                <td style="width: 40%;">
+                    <p>
+                        {{ outillage.quantite~" "~outillage.designation }}
+                        {% if outillage.marque %}<br>
+                        <lib>{{ "Marque: " }}</lib>
+
+                        {{ outillage.marque }}
+
+                        {% endif %}
+                        {% if outillage.modele %}
+                        <br>
+                        <lib>{{ "Modèle: " }}</lib>
+                        <val>{{ outillage.modele }}</val>
+                        {% endif %}
+                        {% if outillage.anneeAchat %}<br>
+                            <lib>{{ "Année d'achat: " }}</lib>
+                            <val>{{ outillage.anneeAchat }}</val>
+                        {% endif %}
+                    <a href="{{ path('outillage_edit', {'id': outillage.id}) }}"
+                       data-toggle="tooltip"
+                       data-placement="top"
+                       title="Modifier les caractéristiques de l'appareil électronique">
+                        <i class="bi-pencil-fill"></i>
+                    </a>
+                    <a href="{{ path('doc_outillage_new',{'outillage': outillage.id}) }}"
+                       data-toggle="tooltip"
+                       data-placement="top"
+                       title="Télécharger un document  pour{{ outillage.designation }}">
+                        <i class="bi-cloud-upload-fill"></i>
+                    </a>
+                    <div style="float: right">
+        {% for doc in  outillage.docOutillages %}
+                           <a class="btn-success small" href="{{ "uploads/docs/"~doc.docFilename }}" target="_blank">{{ doc.description }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </td>
+                <td>
+                    <maintenance>
+                        {% if outillage.maintenanceOutillages|length>0 %}
+
+                            {% set rang = 1 %}
+
+                            {% for maintenance in outillage.maintenanceOutillages %}
+                                {% include '/maintenance/maintenance.html.twig' %}
+
+                            {% endfor %}
+                        {% else %}
+                            Pas de maintenances prévues
+                        {% endif %}
+                            <a data-placement="top"
+                               data-toggle="tooltip"
+                               href="{{ path('maintenance_outillage_new', {'outillageId': outillage.id}) }}"
+                               title="Ajouter une maintenance {{ outillage.designation }}">
+                                <i class="bi-plus-circle-fill"></i>
+                            </a>
+
+                    </maintenance>
+                </td>
+            </tr>
+        </table>
+  {% endfor %}
+{% endblock %}

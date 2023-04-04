@@ -1,0 +1,74 @@
+{% block body %}
+    {% if bateau.electroniques|length == 0 %}
+        <p>
+            <a href="{{ path('electronique_new', {'bateauId': bateau.id}) }}"
+               data-toggle="tooltip"
+               data-placement="top"
+               title="Ajouter un appareil électronique {{ bateau.nom }}">
+                <i class="bi-plus-circle-fill"></i>
+            </a>
+        </p>
+    {% endif %}
+
+    {% for electronique in bateau.electroniques %}
+        <table style="width: 100%" class="table table-bordered">
+            <tr>
+                <td style="width: 40%;">
+                    <p style="line-height: 20px">
+                        <val>{{ electronique.quantite~" "~electronique.designation }}</val>
+                        <br>
+                        <lib>{{ "Marque: " }}</lib>
+                        <val>{{ electronique.marque }}</val>
+                        <br>
+                        <lib>{{ "Modèle: " }}</lib>
+                        <val>{{ electronique.modele }}</val>
+                        <br>
+                        {% if electronique.anneeAchat %}
+                            <lib>{{ "Année d'achat: " }}</lib>
+                            <val>{{ electronique.anneeAchat }}</val>
+                            <br>
+                        {% endif %}
+                    </p>
+                    <a href="{{ path('electronique_edit', {'id': electronique.id}) }}"
+                       data-toggle="tooltip"
+                       data-placement="top"
+                       title="Modifier les caractéristiques de l'appareil électronique">
+                        <i class="bi-pencil-fill"></i>
+                    </a>
+                    <a href="{{ path('doc_electronique_new',{'electronique': electronique.id}) }}"
+                       data-toggle="tooltip"
+                       data-placement="top"
+                       title="Télécharger un document  pour{{ electronique.designation }}">
+                        <i class="bi-cloud-upload-fill"></i>
+                    </a>
+                    <div style="float: end">
+                        {% for doc in electronique.docElectroniques %}
+                            <a class="btn-success small" href="{{ "uploads/docs/"~doc.docFilename }}" target="_blank">{{ doc.description }}</a>
+                        {% endfor %}
+                    </div>
+                </td>
+                <td>
+                    <maintenance>
+                        {% if electronique.maintenanceElectroniques|length>0 %}
+
+                        {% set rang = 1 %}
+
+                        {% for maintenance in electronique.maintenanceElectroniques %}
+                            {% include '/templates/maintenance/maintenance.html.twig' %}
+                        {% endfor %}
+                        {% else %}
+                        Pas de maintenances prévues
+                        <br>
+                        <a data-placement="top"
+                           data-toggle="tooltip"
+                           href="{{ path('maintenance_electronique_new', {'electroniqueId': electronique.id}) }}"
+                           title="Ajouter une maintenance {{ electronique.designation }}">
+                            <i class="bi-plus-circle-fill"></i>
+                        </a>
+                    </maintenance>
+                </td>
+                {% endif %}
+            </tr>
+        </table>
+    {% endfor %}
+{% endblock %}

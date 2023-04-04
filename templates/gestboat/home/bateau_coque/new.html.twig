@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau bateau{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <h4>Nouveau bateau</h4>
+
+                {{ include('/gestboat/home/bateau_coque/new.html.twig') }}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

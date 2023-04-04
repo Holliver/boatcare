@@ -1,0 +1,56 @@
+{% block body %}
+    <div class="container">
+        <div class="col-8">
+            {{ form_start(form) }}
+            <div class="form-group">
+                <div class="col-md-9"> {{ form_row(form.designation) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-9">{{ form_row(form.fourniture) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div id="rythme" class="col-md-9">{{ form_row(form.rythme) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div id="faitle" class="col-md-9">{{ form_row(form.faitle) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div id="echeance" class="col-md-9">{{ form_row(form.echeance) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success">Valider cette maintenance</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+
+    <script>
+        $(function () {
+            const faitle = $('#faitle');
+            const echeance = $('#echeance');
+            const rythme = $('#maintenance_voile_rythme');
+
+            echeance.hide();
+            rythme.change(function () {
+                if (rythme.val() === "Annuel") {
+                    faitle.show();
+                    echeance.hide();
+                } else if (rythme.val() === "Echéance") {
+                    faitle.hide();
+                    echeance.show();
+                } else {
+                    faitle.hide();
+                    echeance.hide();
+                }
+            });
+        });
+    </script>
+{% endblock %}

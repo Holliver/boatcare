@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New MaintenanceBateau{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h4 style=" color: gold;background: #022241;">Ajouter une maintenance coque/carène</h4>
+        {{ include('maintenance_bateau/_form.html.twig') }}
+{#        {{ include('maintenance_bateau/echeanceFormBateau.html.twig') }}#}
+
+    </div>
+
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('/js/jquery.min.js') }}"></script>
+    <script>
+        $(function () {
+            const faitle = $('#faitle');
+            const echeance = $('#echeance');
+            const rythme = $('#maintenance_bateau_rythmebateau');
+
+            echeance.hide();
+            rythme.change(function () {
+                if (rythme.val() === "Annuel") {
+                    faitle.show();
+                    echeance.hide();
+                } else if (rythme.val() === "Echéance") {
+                    faitle.hide();
+                    echeance.show();
+                } else {
+                    faitle.hide();
+                    echeance.hide();
+                }
+            });
+        });
+    </script>
+{% endblock %}

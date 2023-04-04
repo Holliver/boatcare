@@ -1,0 +1,127 @@
+{% block body %}
+    {% set numMoteur = 0 %}
+    {% if bateau.moteurs|length > 0 %}
+        {% for moteur in bateau.moteurs %}
+            <table style="width: 100%" class="table table-bordered">
+                <tr>
+                    <td style="vertical-align: middle;width: 40%;">
+                       <p style="text-align: center;color: gold"><strong>Moteur N°{{ numMoteur+1 }}</strong>
+                            </p>
+                        {% set numMoteur = numMoteur+1 %}
+                        <table class="table-borderless">
+                            <tr>
+                                <td style="color: #87cefa;text-align: right">{{ "Marque: &nbsp" }}</td>
+                                <td style="color: white;text-align: left">{{ moteur.marque }}</td>
+                            </tr>
+                            <tr>
+                                <td style="color: #87cefa;text-align: right">{{ "Modèle: &nbsp" }}</td>
+                                <td style="color: white;text-align: left">{{ moteur.modele }}</td>
+                            </tr>
+                            <tr>
+                                <td style="color: #87cefa;text-align: right">{{ "Puissance: &nbsp" }}</td>
+                                <td style="color: white;text-align: left">{{ moteur.puissance~" CV" }}</td>
+                            </tr>
+                            <tr>
+                                <td style="color: #87cefa;text-align: right">{{ "N° de serie: &nbsp" }}</td>
+                                <td style="color: white;text-align: left">{{ moteur.numSerie }}</td>
+                            </tr>
+                            <tr>
+                                <td style="color: #87cefa;text-align: right">{{ "Année: &nbsp" }}</td>
+                                <td style="color: white;text-align: left">{{ moteur.anneeAchat }}</td>
+                            </tr>
+                            <tr>
+                                <td style="color: #87cefa;text-align: right">{{ "Transmission: &nbsp" }}</td>
+                                <td style="color: white;text-align: left">{{ moteur.transmission }}</td>
+                            </tr>
+                            <tr>
+                                <td style="color: #87cefa;text-align: right">{{ "Carburant: &nbsp" }}</td>
+                                <td style="color: white;text-align: left">{{ moteur.carburant }}</td>
+                            </tr>
+                        </table>
+                        <a href="{{ path('moteur_edit', {'id': moteur.id}) }}"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Modifier les caractéristiques de ce moteur {{ ''~moteur.marque }}">
+                            <i class="bi-pencil-fill" ></i>
+                        </a>
+                        <a href="{{ path('doc_moteur_new',{'moteur': moteur.id}) }}"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Télécharger une documentation  pour ce moteur{{ ''~moteur.marque }}">
+                            <i class="bi-cloud-upload-fill"></i>
+                        </a>
+                    </td>
+                    {% if bateau.moteurs|length == numMoteur %}
+                    {% endif %}
+                    <td>
+                        <maintenance>
+                            {% if moteur.maintenanceMoteurs|length > 0 %}
+                                <div style="text-align: center;font-weight: bold;color: gold">Entretien moteur N° {{ numMoteur }}
+                                </div>
+                                {% set rang = 1 %}
+                                <div>
+                                    {% for operation in moteur.maintenanceMoteurs %}
+                                    <table style="width: 100%" class="table table-bordered">
+                                        <tr>
+                                            <td>
+                                            <strong>{{ operation.designation|upper }}</strong>
+                                            {% if operation.rythme %}
+                                                ({{ operation.rythme }})
+
+                                                {% if operation.echeance %}
+                                                    {% if  operation.echeance < date() %}
+                                                        <a style=" color: red">
+                                                            <br>
+                                                            Echéance:{{ operation.echeance|date("d-m- Y") }}
+                                                        </a>
+                                                        <br>
+                                                    {% elseif operation.echeance|date_modify("-1 month")<= date() %}
+                                                        <a style=" color: orange"><br>Echéance:{{ operation.echeance|date("d-m- Y") }}
+                                                        </a><br>
+                                                    {% elseif operation.echeance|date_modify("-1 month")> date() %}
+                                                        <a style=" color: #66e291"><br>Echéance:{{ operation.echeance|date("d-m- Y") }}
+                                                        </a><br>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endif %}
+                                            <f style="color: #87cefa" id="fournitures">
+                                                {{ operation.fourniture|nl2br }}
+                                            </f>
+
+
+                                            <a href="{{ path('maintenance_moteur_edit', {'id': operation.id}) }}" data-toggle="tooltip"
+                                               data-placement="top"
+                                               title="Modifier la maintenance {{ operation.designation }}">
+                                                <i class="bi-pencil-fill" ></i>
+                                            </a>
+
+                                        {% set rang = rang + 1 %}</td>
+                                        </tr>
+
+                                        {% if   loop.index == 1 %}
+                                            <a href="{{ path('maintenance_moteur_new', {'moteurIdId': operation.moteurId.id}) }}"
+                                               data-toggle="tooltip"
+                                               data-placement="top"
+                                               title="Ajouter une maintenance au moteur {{ operation.moteurId.marque }}">
+                                                <i class="bi-plus-circle-fill" ></i></a>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    </table>
+                                </div>
+
+                            {% else %}
+                                Pas de maintenances prévues
+                                <a href="{{ path('maintenance_moteur_new', {'moteurIdId': moteur.id}) }}"
+                                   data-toggle="tooltip"
+                                   data-placement="top"
+                                   title="Ajouter une maintenance au moteur ">
+                                    <i class="bi-plus-circle-fill"></i></a>
+                            {% endif %}
+                        </maintenance>
+                    </td>
+                </tr>
+            </table>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

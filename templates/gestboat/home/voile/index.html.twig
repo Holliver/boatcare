@@ -1,0 +1,47 @@
+{% extends '../../../base.html.twig' %}
+
+{% block title %}Voile index{% endblock %}
+
+{% block body %}
+    <h1>Voile index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Denomination</th>
+                <th>Surface</th>
+                <th>AnneeFabrication</th>
+                <th>LongueurGuindant</th>
+                <th>LongueurChute</th>
+                <th>LongueurBordure</th>
+                <th>Matiere</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for voile in voiles %}
+            <tr>
+                <td>{{ voile.id }}</td>
+                <td>{{ voile.denomination }}</td>
+                <td>{{ voile.surface }}</td>
+                <td>{{ voile.anneeFabrication }}</td>
+                <td>{{ voile.longueurGuindant }}</td>
+                <td>{{ voile.longueurChute }}</td>
+                <td>{{ voile.longueurBordure }}</td>
+                <td>{{ voile.matiere }}</td>
+                <td>
+                    <a href="{{ path('gestboat/home/voile/show', {'id': voile.id}) }}">show</a>
+                    <a href="{{ path('gestboat/home/voile/edit', {'id': voile.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('home') }}">Create new</a>
+{% endblock %}

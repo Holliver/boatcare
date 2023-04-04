@@ -1,0 +1,47 @@
+{% block body %}
+    {% set rang = 1 %}
+    <div style="flex-direction: column;" class="maintenanceMoteur d-flex">
+        {#<div style="width: 300px" class="maintenanceMoteur container d-flex ">#}
+        {% for operation in operations %}
+            {% if  rang is even %}
+            {% endif %}
+            <div class="d-flex">
+                <div class="p-1 flex-grow-1 text-left"><strong>{{ operation.designation|upper }}</strong>
+                    {% if operation.rythme %}
+                        ({{ operation.rythme }})
+                        {% if operation.echeance %}
+                            {% if  operation.echeance < date() %}
+                                <a style=" color: red"><strong>Echéance:{{ operation.echeance|date("d-m- Y") }}
+                                    </strong></a><br>
+                            {% elseif operation.echeance|date_modify("-1 month")<= date() %}
+                                <a style=" color: orange">Echéance:{{ operation.echeance|date("d-m- Y") }}
+                                </a><br>
+                            {% elseif operation.echeance|date_modify("-1 month")> date() %}
+                                <a style=" color: #66e291">Echéance:{{ operation.echeance|date("d-m- Y") }}
+                                </a><br>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                    {{ operation.fourniture|nl2br }}
+                </div>
+            </div>
+            <div>
+                <a href="{{ path('maintenance_moteur_edit', {'id': operation.id}) }}" data-toggle="tooltip"
+                   data-placement="top"
+                   title="Modifier la maintenance {{ operation.designation }}">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </a>
+            </div>
+            {% set rang = rang + 1 %}
+        {% endfor %}
+        {% for operation in operations %}
+            {% if   loop.index == 1 %}
+                <a href="{{ path('maintenance_moteur_new', {'moteurIdId': operation.moteurId.id}) }}"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title="Ajouter une maintenance au moteur {{ operation.moteurId.marque }}">
+                    <span class="glyphicon glyphicon-plus"></span></a>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

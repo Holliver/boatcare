@@ -1,0 +1,49 @@
+<div class="accordion-item">
+    <div class="accordion-header" id="panelsStayOpen-headingAccastillage">
+            <span id="etiquetteAccordeon" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#panelsStayOpen-collapseAccastillage"
+                  aria-expanded="true"
+                  aria-controls="panelsStayOpen-collapseAccastillage">
+                 {% for accastillage in bateau.accastillages %}
+                     {% for maintenance in accastillage.maintenanceAccastillages %}
+                         {% if maintenance.echeance is not null and maintenance.echeance < date() %}
+                             {% set nbreWarningAccastillage = nbreWarningAccastillage +1 %}
+                         {% endif %}
+                     {% endfor %}
+                 {% endfor %}
+                <h4>Accastillage</h4>
+                <span id="quantite">
+                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp {{ bateau.accastillages|length }}
+                </span>
+                <div style="color: red;display: inline;padding-left: 20px">
+                    {% if nbreWarningAccastillage > 0 %}
+                        {{ nbreWarningAccastillage ~" échéances dépassées" }}
+                    {% else %}<i class="bi bi-check-square-fill" style="font-size: 2rem; color: green;"></i>
+                    {% endif %}
+                </div>
+            </span>
+    </div>
+    <div id="panelsStayOpen-collapseAccastillage"
+            {% if rubrique == "accastillage" %}
+                class="accordion-collapse collapse show"
+            {% else %}
+                class="accordion-collapse collapse"
+            {% endif %}
+         aria-labelledby="panelsStayOpen-headingAccastillage">
+        <div class="accordion-body">
+            <a style="display: inline;" href="{{ path('accastillage_new', {'bateauId': bateau.id}) }}"
+               data-toggle="tooltip"
+               data-placement="top"
+               title="Ajouter de l'accastillage pour  {{ bateau.nom }}">
+                <i class="bi-plus-circle-fill"></i>
+                <span class="glyphicon glyphicon-plus"></span></a>
+            <div class="card-body">
+                <accastillage>
+                    {% if bateau.accastillages|length > 0 %}
+                        {% include 'gestboat/home/accastillage/homeAccastillagesTableau.html.twig' %}
+                    {% endif %}
+                </accastillage>
+            </div>
+        </div>
+    </div>
+</div>

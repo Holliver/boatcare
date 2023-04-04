@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit MaintenanceElectronique{% endblock %}
+
+{% block body %}
+    <h4 style=" color: gold;background: #022241;">Edit MaintenanceElectronique</h4>
+
+    {{ include('maintenance_electronique/_form.html.twig', {'button_label': 'Update'}) }}
+{{ include('maintenance_electronique/_delete_form.html.twig') }}
+{% endblock %}

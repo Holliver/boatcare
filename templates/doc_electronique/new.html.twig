@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New DocElectronique{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-10">
+                <h5 style=" color: gold;">{{ "Télélécharger un pdf sur le "~electronique.designation }} </h5>
+
+                {{ include('doc_electronique/_form.html.twig') }}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

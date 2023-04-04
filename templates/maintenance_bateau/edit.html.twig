@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ModifierMaintenanceBateau{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="col-6">
+            <h4 style=" color: gold;background: #022241;">Modifier opération de maintenance coque</h4>
+
+            {{ include('maintenance_bateau/_form.html.twig') }}
+            {{ include('maintenance_bateau/_delete_form.html.twig') }}
+        </div>
+    </div>
+
+{% endblock %}

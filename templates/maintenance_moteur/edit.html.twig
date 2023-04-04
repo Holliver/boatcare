@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit MaintenanceMoteur{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h4 style=" color: gold;background: #022241;">Modifier maintenance moteur</h4>
+                {{ include('maintenance_moteur/echeanceFormMoteur.html.twig', {'button_label': 'Update'}) }}
+                {{ include('maintenance_moteur/_delete_form.html.twig') }}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

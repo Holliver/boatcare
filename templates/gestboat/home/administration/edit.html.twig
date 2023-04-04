@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Administration{% endblock %}
+
+{% block body %}
+   <div class="container">
+       <h4>{{"Modifier les données administratives"}}</h4>
+       {{ include('gestboat/home/administration/_form.html.twig', {'button_label': 'Update'}) }}
+       {{ include('gestboat/home/administration/_delete_form.html.twig') }}
+   </div>
+{% endblock %}

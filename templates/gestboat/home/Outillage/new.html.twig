@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Electricite{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <h4>Nouvel outillage</h4>
+
+                {{ include('/gestboat/home/outillage/_form.html.twig') }}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

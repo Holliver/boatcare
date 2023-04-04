@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New MaintenanceElectricite{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="col-6">
+            <h5 style=" color: gold;background: #022241;">Créer une maintenance électricite</h5>
+            {{ include('maintenance_electricite/_form.html.twig') }}
+        </div>
+    </div>
+
+{% endblock %}

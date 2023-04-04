@@ -1,0 +1,56 @@
+<div class="accordion-item">
+    <div class="accordion-header" id="panelsStayOpen-headingSecurite">
+            <span id="etiquetteAccordeon" class="accordion-button collapsed"
+                  type="button" data-bs-toggle="collapse"
+                  data-bs-target="#panelsStayOpen-collapseSecurite"
+                  aria-expanded="true"
+                  aria-controls="panelsStayOpen-collapseSecurite">
+               {% set nbreEquipemenObligatoires = 0 %}
+                {% for materielSecuriteLegal in bateau.materielSecuriteLegals %}
+                    {% if bateau.typeNavigation == "nav-cotière" and materielSecuriteLegal.navcotiere == 1 %}{% set nbreEquipemenObligatoires = nbreEquipemenObligatoires +1 %}
+                    {% elseif materielSecuriteLegal.semihauturiere == 1 %}{% set nbreEquipemenObligatoires = nbreEquipemenObligatoires +1 %}
+                    {% elseif bateau.typeNavigation == "hauturière" and materielSecuriteLegal.haututiere == 1 %}{% set nbreEquipemenObligatoires = nbreEquipemenObligatoires +1 %}
+                    {% endif %}
+                {% endfor %}
+
+                {% for materielSecuriteLegal in bateau.materielSecuriteLegals %}
+                    {% if materielSecuriteLegal.equipementSecurites|length ==0 and bateau.typeNavigation == "nav-cotière" and materielSecuriteLegal.navcotiere == 1 %}{% set nbreWarningSecurite = nbreWarningSecurite +1 %}
+                    {% elseif materielSecuriteLegal.equipementSecurites|length ==0 and bateau.typeNavigation == "semi-hauturière" and materielSecuriteLegal.semihauturiere == 1 %}{% set nbreWarningSecurite = nbreWarningSecurite +1 %}
+                    {% elseif materielSecuriteLegal.equipementSecurites|length ==0 and bateau.typeNavigation == "hauturière" and materielSecuriteLegal.haututiere == 1 %}{% set nbreWarningSecurite = nbreWarningSecurite +1 %}
+                    {% endif %}
+                {% endfor %}
+
+                <h4>Sécurité</h4>
+                <span id="quantite">
+                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp{{ nbreEquipemenObligatoires }}
+                </span>
+                <div style="color: red;padding-left: 20px;">
+                    {% if nbreWarningSecurite > 0 %}
+                        {{ nbreWarningSecurite ~" infractions" }}
+                    {% else %}<i class="bi bi-check-square-fill" style="font-size: 2rem; color: green;"></i>
+                    {% endif %}
+                </div>
+                </span>
+        <div id="panelsStayOpen-collapseSecurite"
+                {% if rubrique == "securite" %}
+                    class="accordion-collapse collapse show"
+                {% else %}
+                    class="accordion-collapse collapse"
+                {% endif %}
+             aria-labelledby="panelsStayOpen-headingSecurite">
+            <div class="accordion-body">
+                <div class="card-body">
+                    <securite>
+                        {% if bateau.typeNavigation == "nav-cotière" %}
+                            {% include 'gestboat/home/securite/homeMaterielSecuriteLegalCotier.twig' %}
+                        {% elseif   bateau.typeNavigation == "hauturière" %}
+                            {% include 'gestboat/home/securite/homeMaterielSecuriteLegalHauturier.html.twig' %}
+                        {% elseif   bateau.typeNavigation == "semi-hauturière" %}
+                            {% include 'gestboat/home/securite/homeMaterielSecuriteLegalSemiHauturier.html.twig' %}
+                        {% endif %}
+                    </securite>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

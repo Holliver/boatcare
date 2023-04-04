@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit DocAdministration{% endblock %}
+
+{% block body %}
+    <h4>Edit DocAdministration</h4>
+    {{ include('doc_administration/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('doc_administration/_delete_form.html.twig') }}
+{% endblock %}

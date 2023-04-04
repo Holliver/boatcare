@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}New Maintenance Moteur{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+                <h4 style=" color: gold;background: #022241;">Nouvelle maintenance moteur</h4>
+                {{ include('maintenance_moteur/echeanceFormMoteur.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

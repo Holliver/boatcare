@@ -1,0 +1,61 @@
+{% block body %}
+    {% if bateau.accastillages|length == 0 %}
+        <p>
+            <a href="{{ path('accastillage_new', {'bateauId': bateau.id}) }}"
+               data-toggle="tooltip"
+               data-placement="top"
+               title="Ajouter un élément d'accastillage {{ bateau.nom }}">
+                <i class="bi-plus-circle-fill"></i>
+            </a>
+        </p>
+    {% endif %}
+    {% for accastillage in bateau.accastillages %}
+        <table style="width: 100%" class="table table-bordered">
+            <tr>
+                <td style="width: 40%;border-right: #022241">
+                    <p style="line-height: 20px;-moz-border-right-colors: #022241">
+                        <val><strong>{{ accastillage.quantite~" "~accastillage.designation }}</strong></val>
+                        <br>
+                        <lib>{{ "Marque: " }}</lib>
+                        <val>{{ accastillage.marque }}</val>
+                        <br>
+                        <lib>{{ "Modèle: " }}</lib>
+                        <val>{{ accastillage.modele }}</val>
+                        <br>
+                        {% if accastillage.anneeAchat %}
+                            <lib>{{ "Année d'achat: " }}</lib>
+                        {% endif %}
+                        <val>{{ accastillage.anneeAchat }}</val>
+                    </p>
+                </td>
+                <td style="width: 3%;text-align:right;;border-left-color: #022241">
+                    <a style="vertical-align: top;display: inline-block"
+                       href="{{ path('accastillage_edit', {'id': accastillage.id}) }}"
+                       data-toggle="tooltip"
+                       data-placement="top"
+                       title="Modifier les caractéristiques de l'accastillage">
+                        <i class="bi-pencil-fill"></i>
+                    </a>
+                </td>
+                <td>
+                    <maintenance>
+                        {% if accastillage.maintenanceAccastillages|length>0 %}
+                            {% for maintenance in accastillage.maintenanceAccastillages %}
+                                {% include '/templates/maintenance/maintenance.html.twig' %}
+                            {% endfor %}
+                        {% else %}
+                            Pas de maintenances prévues
+                        {% endif %}
+                        <br>
+                        <a data-placement="top"
+                           data-toggle="tooltip"
+                           href="{{ path('maintenance_accastillage_new', {'accastillageId': accastillage.id}) }}"
+                           title="Ajouter une maintenance {{ accastillage.designation }}">
+                            <i class="bi-plus-circle-fill"></i>
+                        </a>
+                    </maintenance>
+                </td>
+            </tr>
+        </table>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New MaterielSecuriteLegal{% endblock %}
+
+{% block body %}
+    <h4 style=" color: gold;background: #022241;">Create new MaterielSecuriteLegal</h4>
+
+    {{ include('materiel_securite_legal/_form.html.twig') }}
+
+    <a href="{{ path('materiel_securite_legal_index') }}">back to list</a>
+{% endblock %}

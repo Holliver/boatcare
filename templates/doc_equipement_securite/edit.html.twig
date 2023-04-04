@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit DocEquipementSecurite{% endblock %}
+
+{% block body %}
+    <h4 style=" color: gold;background: #022241;">Edit DocEquipementSecurite</h4>
+
+    {{ include('doc_equipement_securite/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('doc_equipement_securite/_delete_form.html.twig') }}
+{% endblock %}

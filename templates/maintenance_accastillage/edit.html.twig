@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit MaintenanceAccastillage{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <h4 style=" color: gold;background: #022241;">Edit MaintenanceAccastillage</h4>
+                {{ include('maintenance_accastillage/_form.html.twig', {'button_label': 'Update'}) }}
+                {{ include('maintenance_accastillage/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

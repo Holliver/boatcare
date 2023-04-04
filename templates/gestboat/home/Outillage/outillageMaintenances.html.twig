@@ -1,0 +1,50 @@
+<div class="accordion-item">
+    <div class="accordion-header" id="panelsStayOpen-headingOutillage">
+            <span id="etiquetteAccordeon" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#panelsStayOpen-collapseOutillage"
+                  aria-expanded="true" aria-controls="panelsStayOpen-collapseOutillage">
+                {% for outillage in bateau.outillages %}
+                    {% for maintenance in outillage.maintenanceOutillages %}
+                        {% if maintenance.echeance is not null and maintenance.echeance < date() %}
+                            {% set nbreWarningOutillage = nbreWarningOutillage +1 %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                <h4>Outillage</h4>
+                 <span id="quantite">
+                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp {{ bateau.outillages|length }}
+                </span>
+                <div style="color: red;display: inline;padding-left: 20px">
+                    {% if nbreWarningOutillage > 0 %}
+                        {{ nbreWarningOutillage ~" échéances dépassées" }}
+                    {% else %}<i class="bi bi-check-square-fill" style="font-size: 2rem; color: green;"></i>
+                    {% endif %}
+                </div>
+            </span>
+    </div>
+    <div id="panelsStayOpen-collapseOutillage"
+            {% if rubrique == "outillage" %}
+                class="accordion-collapse collapse show"
+            {% else %}
+                class="accordion-collapse collapse"
+            {% endif %}
+         aria-labelledby="panelsStayOpen-headingOutillage">
+        <div class="accordion-body">
+
+            <a style="display: inline;" href="{{ path('outillage_new', {'id': bateau.id}) }}"
+               data-bs-toggle="tooltip"
+               data-bs-placement="top"
+               title="Ajouter appareil électrique pour  {{ bateau.nom }}">
+                <i class="bi-plus-circle-fill"></i>
+                <a style="float: right;color: #28bc9c">{{ bateau.outillages|length }}</a>
+            </a>
+            <div class="card-body">
+                <outillage>
+                    {% if bateau.outillages|length > 0 %}
+                        {% include 'gestboat/home/outillage/homeOutillageTableau.html.twig' %}
+                    {% endif %}
+                </outillage>
+            </div>
+        </div>
+    </div>
+</div>

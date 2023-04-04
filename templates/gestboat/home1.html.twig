@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% block title %}Boat{% endblock %}
+
+{% block body %}
+    {% if bateau != null %}
+        {% set rubrique = app.request.get("rubrique") %} {{ rubrique }}
+        {% set nbreWarningSecurite = 0 %}
+        {% set nbreWarningAdministration = 0 %}
+        {% set nbreWarningBateauCoque = 0 %}
+        {% set nbreWarningMoteurs = 0 %}
+        {% set nbreWarningElectricite = 0 %}
+        {% set nbreWarningOutillage = 0 %}
+        {% set nbreWarningElectronique = 0 %}
+        {% set nbreWarningAccastillage = 0 %}
+        {% set nbreWarningVoile = 0 %}
+        {% set rubrique = app.request.get('rubrique') %}
+
+        <div class="accordion" id="accordionDuBateau">
+            {% if bateau|length > 0 %}
+                {% include '/gestboat/home/bateau_coque/bateau-coqueMaintenances.html.twig' %}
+                {% include '/gestboat/home/moteurs/moteursMaintenances.html.twig' %}
+                {% include '/gestboat/home/administration/administrationMaintenances.html.twig' %}
+                {% include '/gestboat/home/electricite/electriciteMaintenances.html.twig' %}
+                {% include '/gestboat/home/electronique/electroniqueMaintenances.html.twig' %}
+                {% include '/gestboat/home/outillage/outillageMaintenances.html.twig' %}
+                {% include '/gestboat/home/voile/voilesMaintenances.html.twig' %}
+                {% include '/gestboat/home/accastillage/accastillageMaintenances.html.twig' %}
+                {% include '/gestboat/home/securite/securiteMaintenances.html.twig' %}
+            {% endif %}
+        </div>
+    {% else %}
+        {{ "Pas de bateau" }}
+    {% endif %}
+{% endblock %}

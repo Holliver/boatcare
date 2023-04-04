@@ -1,0 +1,205 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    inventaire
+{% endblock %}
+{% block body %}
+    <div class="container" id="inventaire">
+    {{ bateau.nom }}
+    <div class="materiel">
+        {% if bateau.electricites|length > 0 %}
+            <h4>Électricité</h4>
+            <ul>
+                {% for electricite in bateau.electricites %}
+                    <li>
+                        {{ electricite.quantite~" "~electricite.designation }}
+                        {% if electricite.marque %}
+                            {{ electricite.marque }}
+                        {% endif %}
+                        {% if electricite.modele %}
+                            <lib>{{ "Modèle: " }}</lib>
+                            <val>{{ electricite.modele }}</val>
+                        {% endif %}
+                        {% if electricite.anneeAchat %}
+                            <lib>{{ "Année d'achat: " }}</lib>
+                            <val>{{ electricite.anneeAchat }}</val>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if bateau.electroniques|length > 0 %}
+            <h4>Électronique</h4>
+            <ul>
+                {% for electronique in bateau.electroniques %}
+                    <li>
+                        {{ electronique.quantite~" "~electronique.designation }}
+                        {% if electronique.marque %}
+                            {{ electronique.marque }}
+                        {% endif %}
+                        {% if electronique.modele %}
+                            <lib>{{ "Modèle: " }}</lib>
+                            <val>{{ electronique.modele }}</val>
+                        {% endif %}
+                        {% if electronique.anneeAchat %}
+                            <lib>{{ "Année d'achat: " }}</lib>
+                            <val>{{ electronique.anneeAchat }}</val>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if bateau.accastillages|length > 0 %}
+            <h4>Accastillage</h4>
+            <ul>
+                {% for accastillage in bateau.accastillages %}
+                    <li>
+                        {{ accastillage.quantite~" "~accastillage.designation }}
+                        {% if accastillage.marque %}
+                            {{ accastillage.marque }}
+                        {% endif %}
+                        {% if accastillage.modele %}
+                            <lib>{{ "Modèle: " }}</lib>
+                            <val>{{ accastillage.modele }}</val>
+                        {% endif %}
+                        {% if accastillage.anneeAchat %}
+                            <lib>{{ "Année d'achat: " }}</lib>
+                            <val>{{ accastillage.anneeAchat }}</val>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div class="moteurs">
+        <h4>Moteurs</h4>
+        {% set numMoteur = 0 %}
+        {% if bateau.moteurs|length > 0 %}
+            {% for moteur in bateau.moteurs %}
+                <p style="color: gold"><strong>Moteur N°{{ numMoteur+1 }}</strong>
+                </p>
+                {% set numMoteur = numMoteur+1 %}
+                <lib>{{ "Marque: &nbsp" }}</lib>
+                {{ moteur.marque }}
+                {% if moteur.modele %}<br>
+                    <lib>{{ "Modèle: &nbsp" }}</lib>
+                    {{ moteur.modele }}
+                {% endif %}
+                {% if moteur.puissance %}
+                    <lib>{{ "Puissance: &nbsp" }}</lib>
+                    {{ moteur.puissance~" CV" }}
+                {% endif %}
+                {% if moteur.numSerie %}<br>
+                    <lib>{{ "N° de serie: &nbsp" }}</lib>
+                    {{ moteur.numSerie }}
+                {% endif %}
+
+                {% if moteur.anneeAchat %}<br>
+                    <lib>{{ "Année: &nbsp" }}</lib>
+                    {{ moteur.anneeAchat }}
+                {% endif %}
+                {% if moteur.transmission %}<br>
+                    <lib>{{ "Transmission: &nbsp" }}</lib>
+                    {{ moteur.transmission }}
+                {% endif %}
+                {% if moteur.carburant %}<br>
+                    <lib>{{ "Carburant: &nbsp" }}</lib>
+                    {{ moteur.carburant }}
+                {% endif %}
+                {% if bateau.moteurs|length == numMoteur %}
+                {% endif %}
+                <hr>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="voiles">
+        {% if bateau.voiles|length > 0 %}
+        <h4>Voiles</h4>
+        <ul>
+            {% for voile in bateau.voiles %}
+            <li>
+                {{ voile.denomination}}
+                {% if voile.surface %}{{ ' de ' }}{{~voile.surface~' m²'}}{% endif %}
+                {% if voile.matiere %}{{ ' en ' }}{{voile.matiere}}{% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <div class="securite">
+        <h4>Materiel de sécurité</h4>
+        {% for materielSecuriteLegal in bateau.materielSecuriteLegals %}
+            {% if bateau.typeNavigation == "hauturière" and materielSecuriteLegal.haututiere == 1 %}
+                <ul>
+                    {% for equipementSecurite in materielSecuriteLegal.equipementSecurites %}
+                        <li>
+                            {{ equipementSecurite.quantite~" "~equipementSecurite.designation }}
+                            {{ equipementSecurite.marque }}
+                            {% if equipementSecurite.datePeremption %}
+                                {% if equipementSecurite.datePeremption < date('now') %}
+                                    <c style="color: red"> {{ "Péremption le: "~equipementSecurite.datePeremption|date("d/m/Y") }}</c>
+                                {% else %}
+                                    <c style="color: white"> {{ "Péremption le: "~equipementSecurite.datePeremption|date("d/m/Y") }}</c>
+                                {% endif %}
+                            {% endif %}
+                            {% if equipementSecurite.dateProchaineRevision %}
+                                {% if equipementSecurite.dateProchaineRevision< date('now') %}
+                                    <c style="color: red"> {{ "Révision le: "~equipementSecurite.dateProchaineRevision|date("d/m/Y") }}</c>
+                                {% else %}
+                                    <c style="color: #ffffff"> {{ "Révision le: "~equipementSecurite.dateProchaineRevision|date("d/m/Y") }}</c>
+                                {% endif %}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% elseif bateau.typeNavigation == "semi-hauturière" and materielSecuriteLegal.semihauturiere == 1 %}
+                {% if materielSecuriteLegal.equipementSecurites|length >0 %}
+                    <ul>
+                        {% for equipementSecurite in materielSecuriteLegal.equipementSecurites %}
+                            <li>
+                                {{ equipementSecurite.quantite~" "~equipementSecurite.designation }}
+                                {{ equipementSecurite.marque }}
+                                {% if equipementSecurite.datePeremption %}
+                                    {% if equipementSecurite.datePeremption < date('now') %}
+                                        <c style="color: red"> {{ "Péremption le: "~equipementSecurite.datePeremption|date("d/m/Y") }}</c>
+                                    {% else %}
+                                        <c style="color: white"> {{ "Péremption le: "~equipementSecurite.datePeremption|date("d/m/Y") }}</c>
+                                    {% endif %}
+                                {% endif %}
+                                {% if equipementSecurite.dateProchaineRevision %}
+                                    {% if equipementSecurite.dateProchaineRevision< date('now') %}
+                                        <c style="color: red"> {{ "Révision le: "~equipementSecurite.dateProchaineRevision|date("d/m/Y") }}</c>
+                                    {% else %}
+                                        <c style="color: #ffffff"> {{ "Révision le: "~equipementSecurite.dateProchaineRevision|date("d/m/Y") }}</c>
+                                    {% endif %}
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% elseif bateau.typeNavigation == "nav-cotière" and materielSecuriteLegal.navcotiere == 1 %}
+                <ul>
+                    {% for equipementSecurite in materielSecuriteLegal.equipementSecurites %}
+                        <li>
+                            {{ equipementSecurite.quantite~" "~equipementSecurite.designation }}
+                            {{ equipementSecurite.marque }}
+                            {% if equipementSecurite.datePeremption %}
+                                {% if equipementSecurite.datePeremption < date('now') %}
+                                    <c style="color: red"> {{ "Péremption le: "~equipementSecurite.datePeremption|date("d/m/Y") }}</c>
+                                {% else %}
+                                    <c style="color: white"> {{ "Péremption le: "~equipementSecurite.datePeremption|date("d/m/Y") }}</c>
+                                {% endif %}
+                            {% endif %}
+                            {% if equipementSecurite.dateProchaineRevision %}
+                                {% if equipementSecurite.dateProchaineRevision< date('now') %}
+                                    <c style="color: red"> {{ "Révision le: "~equipementSecurite.dateProchaineRevision|date("d/m/Y") }}</c>
+                                {% else %}
+                                    <c style="color: #ffffff"> {{ "Révision le: "~equipementSecurite.dateProchaineRevision|date("d/m/Y") }}</c>
+                                {% endif %}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

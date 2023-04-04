@@ -1,0 +1,60 @@
+<div class="accordion-item">
+    <div class="accordion-header" id="panelsStayOpen-administration">
+            <span id="etiquetteAccordeon" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#panelsStayOpen-collapseAdministration"
+                  aria-expanded="false" aria-controls="panelsStayOpen-collapseAdministration">
+                {% if bateau.administration|length > 0 %}
+                    {% for maintenance in bateau.administration.maintenanceAdministrations %}
+                        {% if maintenance.echeance is not null and maintenance.echeance < date() %}
+                            {% set nbreWarningAdministration = nbreWarningAdministration +1 %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+            <h4>Administration</h4>{{ nbreWarningAdministration }}
+                <div style="color: red;display: inline;padding-left: 20px">
+                {% if nbreWarningAdministration > 0 %}
+                    &nbsp &nbsp &nbsp{{ nbreWarningAdministration ~" échéances dépassées" }}
+
+                {% else %}
+                    <i class="bi bi-check-square-fill" style="font-size: 2rem; color: green;"></i>
+                {% endif %}
+                </div>
+            </span>
+    </div>
+    <div id="panelsStayOpen-collapseAdministration"
+            {% if rubrique == "administration" %}
+                class="accordion-collapse collapse show"
+            {% else %}
+                class="accordion-collapse collapse"
+            {% endif %}
+         aria-labelledby="panelsStayOpen-administration">
+        <div class="accordion-body">
+
+            <div style="display: inline;">
+                <div style="color: red;display: inline;">
+                    {% if bateau.administration|length < 1 %}
+                        <a style="display: inline" href="{{ path('administration_new', {'bateauId': bateau.id}) }}"
+                           data-bs-toggle="tooltip"
+                           data-bs-placement="top"
+                           title="Saisir les données administratives de {{ bateau.nom }}">
+                            <i class="bi-plus-circle-fill"></i>
+                        </a>
+                        {% elseif nbreWarningAdministration > 0 %}
+                            {{ nbreWarningAdministration ~" échéances dépassées" }}
+                       {# {% elseif nbreWarningAdministration == 0 %}
+                            <div style="color: green;display: inline;">
+                                {{ nbreWarningAdministration ~" échéances dépassées" }}
+                            </div>#}
+                        {% endif %}
+
+
+
+                </div>
+            </div>
+            {% if bateau.administration|length > 0 %}
+                {% include 'gestboat/home/administration/homeAdministration1Tableau.html.twig' %}
+            {% endif %}
+        </div>
+    </div>
+</div>

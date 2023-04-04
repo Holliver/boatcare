@@ -1,0 +1,115 @@
+{% block body %}
+    {% if bateau.administration|length > 0 %}
+    {% set adminId = null %}
+    <table style="width: 100%" class="table table-bordered ">
+        <tr>
+            <td style="vertical-align: middle;width: 40%;">
+                <table id="description" class="table-borderless">
+                    <tr>
+                        <td id="lib">{{ "N° francisation:&nbsp &nbsp &nbsp  " }}</td>
+                        <td id="val">{{ bateau.administration.numFrancisation }}</td>
+                    </tr>
+                    <tr>
+                        <td id="lib">{{ "N° d'immatriculation:&nbsp &nbsp &nbsp  " }}</td>
+                        <td id="val">{{ bateau.administration.numImatriculation }}</td>
+                    </tr>
+                    <tr>
+                        <td id="lib">{{ "MMSI:&nbsp &nbsp &nbsp  " }}</td>
+                        <td id="val">{{ bateau.administration.numLicenceStationNavire }}</td>
+                    </tr>
+                    <tr>
+                        <td id="lib">{{ "N° licence station navire:&nbsp &nbsp &nbsp  " }}</td>
+                        <td id="val" style="vertical-align: bottom">{{ bateau.administration.mMSI }}</td>
+                    </tr>
+                    <tr>
+                        <td id="lib">{{ "Indicatif d'appel: &nbsp &nbsp &nbsp" }}</td>
+                        <td id="val">{{ bateau.administration.indicatifAppel }}</td>
+                    </tr>
+                    <tr>
+                        <td id="lib">{{ "Cie assurance:&nbsp &nbsp &nbsp  " }}</td>
+                        <td id="val">{{ bateau.administration.cieAssurance }}</td>
+                    </tr>
+                    <tr>
+                        <td id="lib">{{ "Email courtier assurance:&nbsp &nbsp &nbsp  " }}</td>
+                        <td id="val">{{ bateau.administration.emailCourtierAss }}</td>
+                    </tr>
+                </table>
+                <a href="{{ path('administration_edit', {'id': bateau.administration.id }) }}"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title="Modifier les donnée  administratives de {{ bateau.nom }}">
+                    <i class="bi-pencil-fill"></i>
+                </a>
+                {% if bateau.administration.docAdministrations|length == 0 %}
+                {% endif %}
+                <a href="{{ path('doc_administration_new',{'administration': bateau.administration.id}) }}"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title="Télécharger un document administratif pour{{ bateau.nom }}">
+                    <i class="bi-cloud-upload-fill"></i>
+                </a>
+                <br>
+                <div style="float: end">
+                    {% for doc in bateau.administration.docAdministrations %}
+                        <a class="btn-success small" href="{{ "uploads/docs/"~doc.docFilename }}" target="_blank">{{ doc.description }}</a>
+                    {% endfor %}
+                </div>
+            </td>
+            <td>
+                {% if bateau.administration.maintenanceAdministrations|length>0 %}
+                    {% set rang = 1 %}
+                    {% for operation in bateau.administration.maintenanceAdministrations %}
+
+                        {{ operation.designation|upper }}{% if operation.rythmeadministration %}
+
+                        {% if operation.rythmeadministration %}
+                            ({{ operation.rythmeadministration }})<br>
+                            {% if operation.echeance %}
+                                {% if  operation.echeance < date() %}
+                                    <a style=" color: red"><strong>Echéance:{{ operation.echeance|date("d-m- Y") }}</strong>
+                                    </a>
+                                {% elseif operation.echeance|date_modify("-1 month")<= date() %}
+                                    <a style=" color: orange">{{ "Echéance: "~operation.echeance|date("d-m- Y") }}
+                                    </a>
+                                {% elseif operation.echeance|date_modify("-1 month")> date() %}
+                                    <a style=" color: #66e291">{{ "Echéance: "~operation.echeance|date("d-m- Y") }}
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                        {% if operation.faitle %}
+                            {{ " fait le: "~operation.faitle |date("d-m- Y") }}
+                        {% endif %}
+                        <a href="{{ path('maintenance_administration_edit', {'id': operation.id}) }}"
+                           data-bs-toggle="tooltip"
+                           data-bs-placement="top"
+                           title="Modifier la maintenance {{ operation.designation }}">
+                            <i class="bi-pencil-fill"></i>
+                        </a>
+                    {% endif %}
+                        {% set rang = rang + 1 %}
+                        <br>
+                    {% endfor %}
+                    {% if bateau.administration.maintenanceAdministrations|length>0 %}
+                        <a href="{{ path('maintenance_administration_new',{'administrationId': bateau.administration.id}) }}"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Créer une échéance administrative pour {{ bateau.administration.bateau.nom }}">
+                            <i class="bi-plus-circle-fill"></i>
+                        </a>
+                    {% endif %}
+                {% else %}
+                    Pas d'échéances prévues
+                    <a href="{{ path('maintenance_administration_new',{'administrationId': bateau.administration.id}) }}"
+                       data-bs-toggle="tooltip"
+                       data-bs-placement="top"
+                       title="Créer une échéance administrative pour {{ bateau.nom }}">
+                        <i class="bi-plus-circle-fill"></i>
+                    </a>
+
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    {% endif %}
+{% endblock %}

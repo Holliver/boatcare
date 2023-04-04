@@ -1,0 +1,51 @@
+<div class="accordion-item">
+    <div class="accordion-header" id="panelsStayOpen-headingElectricite">
+            <span id="etiquetteAccordeon" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#panelsStayOpen-collapseElectricite"
+                  aria-expanded="true" aria-controls="panelsStayOpen-collapseElectricite">
+                {% for electricite in bateau.electricites %}
+                    {% for maintenance in electricite.maintenanceElectricites %}
+                        {% if maintenance.echeance is not null and maintenance.echeance < date() %}
+                            {% set nbreWarningElectricite = nbreWarningElectricite +1 %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                <h4>Electricité</h4>
+                 <span id="quantite">
+                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp {{ bateau.electricites|length }}
+                </span>
+                <div style="color: red;display: inline;padding-left: 20px">
+                    {% if nbreWarningElectricite > 0 %}
+                        {{ nbreWarningElectricite ~" échéances dépassées" }}
+                    {% else %}<i class="bi bi-check-square-fill" style="font-size: 2rem; color: green;"></i>
+                    {% endif %}
+                </div>
+            </span>
+
+    </div>
+    <div id="panelsStayOpen-collapseElectricite"
+            {% if rubrique == "electricite" %}
+                class="accordion-collapse collapse show"
+            {% else %}
+                class="accordion-collapse collapse"
+            {% endif %}
+         aria-labelledby="panelsStayOpen-headingElectricite">
+        <div class="accordion-body">
+
+            <a style="display: inline;" href="{{ path('electricite_new', {'id': bateau.id}) }}"
+               data-bs-toggle="tooltip"
+               data-bs-placement="top"
+               title="Ajouter appareil électrique pour  {{ bateau.nom }}">
+                <i class="bi-plus-circle-fill"></i>
+                <a style="float: right;color: #28bc9c">{{ bateau.electricites|length }}</a>
+            </a>
+            <div class="card-body">
+                <electricite>
+                    {% if bateau.electricites|length > 0 %}
+                        {% include 'gestboat/home/electricite/homeElectriciteTableau.html.twig' %}
+                    {% endif %}
+                </electricite>
+            </div>
+        </div>
+    </div>
+</div>

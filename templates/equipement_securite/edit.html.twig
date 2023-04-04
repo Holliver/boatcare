@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit EquipementSecurite{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h4>Modifier équipement de sécurité</h4>
+
+        {{ include('equipement_securite/_form.html.twig', {'button_label': 'Modifier'}) }}
+        {{ include('equipement_securite/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

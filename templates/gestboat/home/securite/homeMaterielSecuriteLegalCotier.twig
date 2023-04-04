@@ -1,0 +1,129 @@
+{% block body %}
+
+
+    <table style="width: 100%" class="table table-bordered">
+
+       {{ "Navigation choisie: "~bateau.typeNavigation~", jusqu’à 6 milles d’un abri." }}
+
+        {% for materielSecuriteLegal in bateau.materielSecuriteLegals %}
+            <tr>
+            <tr>
+
+            {% if materielSecuriteLegal.navcotiere == 1 %}
+                <td style="width: 50%;color: skyblue">
+                    <div class="text-left">
+                        {{ materielSecuriteLegal.designation }}
+                    </div>
+                </td>
+                <td>
+                    {% if materielSecuriteLegal.equipementSecurites|length ==0 %}
+                        <a href="{{ path('equipement_securite_new', {'equipLegalId': materielSecuriteLegal.id}) }}"
+                           data-bs-toggle="tooltip"
+                           data-placement="top"
+                           title="Ajouter un equipement sécurité à {{ materielSecuriteLegal.designation }}">
+                            <i class="bi-plus-circle-fill" ></i>
+                        </a>
+                        <strong style="color: red">{{ "Manquant" }}</strong>{% set nbreWarningSecurite = nbreWarningSecurite +1 %}
+                    {% else %}
+                        {% for equipementSecurite in materielSecuriteLegal.equipementSecurites %}
+                            <table style="width: 100%;margin-bottom: 0" class="table table-bordered">
+                                <tr>
+                                    <td>
+                                        {{ equipementSecurite.quantite~" "~equipementSecurite.designation }}
+
+                                        {{ equipementSecurite.marque }}
+
+                                        {% if equipementSecurite.datePeremption %}
+                                            {% if equipementSecurite.datePeremption < date('now') %}
+                                                <c style="color: red"> {{ "Péremption le: "~equipementSecurite.datePeremption|date("d/m/Y") }}</c>{% set nbreWarningSecurite = nbreWarningSecurite +1 %}
+                                            {% else %}
+                                                <c style="color: white"> {{ "Péremption le: "~equipementSecurite.datePeremption|date("d/m/Y") }}</c>
+                                            {% endif %}
+                                        {% endif %}
+                                        {% if equipementSecurite.dateProchaineRevision %}
+                                            {% if equipementSecurite.dateProchaineRevision< date('now') %}
+                                                <c style="color: red"> {{ "Révision le: "~equipementSecurite.dateProchaineRevision|date("d/m/Y") }}</c>{% set nbreWarningSecurite = nbreWarningSecurite +1 %}
+                                            {% else %}
+                                                <c style="color: #ffffff"> {{ "Révision le: "~equipementSecurite.dateProchaineRevision|date("d/m/Y") }}</c>
+                                            {% endif %}
+                                        {% endif %}
+                                        <a href="{{ path('equipSecu_edit', {'id': equipementSecurite.id}) }}"
+                                           data-bs-toggle="tooltip"
+                                           data-placement="top"
+                                           title="Modifier un equipement sécurité de {{ equipementSecurite.designation }}">
+                                            <i class="bi-pencil-fill" ></i>
+                                        </a>
+                                    </td>
+                                    <a href="{{ path('equipement_securite_new', {'equipLegalId': materielSecuriteLegal.id}) }}"
+                                       data-bs-toggle="tooltip"
+                                       data-placement="top"
+                                       title="Ajouter un equipement sécurité à {{ materielSecuriteLegal.designation }}">
+                                        <i class="bi-plus-circle-fill" ></i>
+                                    </a>
+                                </tr>
+                            </table>
+                        {% endfor %}
+                    {% endif %}
+                </td>
+                {% set compte = 0 %}
+            {% else %}
+                {% if compte == 0 %}
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <h4 style="display: inline;" >{{ "Materiel supplémentaire" }}</h4>
+                            <a style="display: inline;" href="{{ path('equipement_securite_newNonObligatoire', {'bateauId': bateau.id}) }}"
+                                                                       data-bs-toggle="tooltip"
+                                                                       data-bs-placement="top"
+                                                                       title="Ajouter un equipement sécurité non obligatoire pour la zone de nav du bateau">
+                                <i class="bi-plus-circle-fill" ></i>
+                            </a>
+                        </td>
+                    </tr> {% set compte = compte + 1 %}
+                {% endif %}
+                <tr>
+                    {% if materielSecuriteLegal.equipementSecurites|length >0 %}
+                        <td style="width: 50%;color: skyblue">
+
+
+                            <div class="text-left">{{ materielSecuriteLegal.designation }}
+                            </div>
+                        </td>
+                        <td>
+                            {% for equipementSecurite in materielSecuriteLegal.equipementSecurites %}
+                                <table style="width: 100%;margin-bottom: 0" class="table table-bordered">
+                                    <tr>
+                                        <td>
+                                            {{ equipementSecurite.quantite~" "~equipementSecurite.designation }}
+                                            {{ equipementSecurite.marque }}
+                                            {% if equipementSecurite.datePeremption %}
+                                                {% if equipementSecurite.datePeremption < date('now') %}
+                                                    <c style="color: red"> {{ "Péremption le: "~equipementSecurite.datePeremption|date("d/m/Y") }}</c>{% set nbreWarningSecurite = nbreWarningSecurite +1 %}
+                                                {% else %}
+                                                    <c style="color: white"> {{ "Péremption le: "~equipementSecurite.datePeremption|date("d/m/Y") }}</c>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if equipementSecurite.dateProchaineRevision %}
+                                                {% if equipementSecurite.dateProchaineRevision< date('now') %}
+                                                    <c style="color: red"> {{ "Révision le: "~equipementSecurite.dateProchaineRevision|date("d/m/Y") }}</c>{% set nbreWarningSecurite = nbreWarningSecurite +1 %}
+                                                {% else %}
+                                                    <c style="color: #ffffff"> {{ "Révision le: "~equipementSecurite.dateProchaineRevision|date("d/m/Y") }}</c>
+                                                {% endif %}
+                                            {% endif %}
+                                            <a href="{{ path('equipSecu_edit', {'id': equipementSecurite.id}) }}"
+                                               data-bs-toggle="tooltip"
+                                               data-bs-placement="top"
+                                               title="Modifier l' equipement sécurité : {{ equipementSecurite.designation }}">
+                                                <i class="bi-pencil-fill" ></i></a>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            {% endfor %}
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+{% endblock %}

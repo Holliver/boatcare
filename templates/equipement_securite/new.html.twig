@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New EquipementSecurite{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4>Ajouter un équipement de sécurité</h4>
+
+                {{ include('equipement_securite/_form.html.twig') }}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

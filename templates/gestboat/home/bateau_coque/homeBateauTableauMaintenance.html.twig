@@ -1,0 +1,125 @@
+{% block body %}
+    {% set adminId = null %}
+    {% if bateau|length > 0 %}
+
+        <table class="table table-bordered">
+            <tr>
+                <td style="vertical-align: middle;width: 40%;">
+                    <table class="table-borderless">
+                        <tr>
+                            <td style="color: white;text-align: right;">{{ "Longueur:&nbsp &nbsp &nbsp " }}</td>
+
+                            <td style="color: #87cefa;text-align: left">{{ bateau.longueur|number_format(2, '.', ',') }}{{ " m" }}</td>
+                        </tr>
+                        <tr>
+                            <td style="color: white;text-align: right">{{ "Largeur:&nbsp &nbsp &nbsp    " }}</td>
+                            <td id="valeur" style="color: #87cefa;text-align: left">{{ bateau.largeur|number_format(2, '.', ',') }}{{ " m" }}</td>
+                        <tr>
+                        <tr>
+                            <td style="color: white;text-align: right">{{ "Tirant d'eau:&nbsp &nbsp &nbsp " }}</td>
+                            <td style="color: #87cefa;text-align: left">{{ bateau.tirantDeau|number_format(2, '.', ',') }}{{ " m" }}</td>
+                        </tr>
+                        <tr>
+                            <td style="color: white;text-align: right">{{ "Tirant d'air: &nbsp &nbsp &nbsp" }}</td>
+                            <td style="color: #87cefa;text-align: left">{{ bateau.tirantDAir|number_format(2, '.', ',') }}{{ " m" }}</td>
+                        </tr>
+                        <tr>
+                            <td style="color: white;text-align: right"> {{ "Poids:&nbsp &nbsp &nbsp " }}</td>
+                            <td style="color: #87cefa;text-align: left">{{ bateau.poids|number_format(0, '.', ' ') }}{{ " Kg" }}</td>
+                        </tr>
+                        <tr>
+                            <td style="color: white;text-align: right">{{ "Type: &nbsp &nbsp &nbsp" }}</td>
+                            <td style="color: #87cefa;text-align: left">{{ bateau.type }}</td>
+                        </tr>
+                        <tr>
+                            <td style="color: white;text-align: right">{{ "Constructeur:&nbsp &nbsp &nbsp " }}</td>
+                            <td style="color: #87cefa;text-align: left">{{ bateau.constructeur }}</td>
+                        </tr>
+
+                        <tr>
+                            <td style="color: white;text-align: right">{{ "Modèle: &nbsp &nbsp &nbsp" }}</td>
+                            <td style="color: #87cefa;text-align: left">{{ bateau.modele }}</td>
+                        </tr>
+                        <tr>
+                            <td style="color: white;text-align: right">{{ "Construit en: &nbsp &nbsp &nbsp" }}</td>
+                            <td style="color: #87cefa;text-align: left">{{ bateau.anneeConstruction }}</td>
+                        </tr>
+                        <tr>
+                            <td style="color: white;text-align: right">{{ "Catégorie conception: &nbsp &nbsp &nbsp" }}</td>
+                            <td style="color: #87cefa;text-align: left">{{ bateau.categorieConception }}</td>
+                        </tr>
+                        <tr>
+                            <td style="color: white;text-align: right">{{ "Type de navigation: &nbsp &nbsp &nbsp" }}</td>
+                            <td style="color: #87cefa;text-align: left">{{ bateau.typeNavigation }}</td>
+                        </tr>
+                        <tr>
+                            <td style="color: white;text-align: right">{{ "Carburant: &nbsp &nbsp &nbsp" }}</td>
+                            <td style="color: #87cefa;text-align: left">{{ bateau.fuel|number_format(0, '.', ' ') }}{{ " litres" }}</td>
+                        </tr>
+                        <tr>
+                            <td style="color: white;text-align: right">{{ "Eau: &nbsp &nbsp &nbsp" }}</td>
+                            <td style="color: #87cefa;text-align: left">{{ bateau.eau|number_format(0, '.', ' ') }}{{ " litres" }}</td>
+                        </tr>
+                    </table>
+                    <a href="{{ path('bateau_edit', {'id': bateau.id}) }}"
+                       data-toggle="tooltip"
+                       data-placement="top"
+                       title="Modifier les caractéristiques du bateau {{ bateau.nom }}">
+                        <i class="bi-pencil-fill" ></i></a>
+                </td>
+                <td>
+                    <table class="table">
+                        <tr>
+                            <maintenance>
+                                <h5 style="color:gold;">Entretien</h5>
+                                {% if bateau.maintenanceBateaus|length > 0 %}
+                                    <div id="entretien">
+                                        {% set rang = 1 %}
+                                        {% for operation in bateau.maintenanceBateaus %}
+                                            <div class="operation">
+                                                <strong>{{ operation.designation|upper }}</strong>
+                                                {% if operation.rythmebateau %} ({{ operation.rythmebateau }})
+                                                    {% if operation.echeance %}
+                                                        {% if  operation.echeance < date() %}
+                                                            <a style=" color: red"><strong>{{ "Echéance: "~operation.echeance|date("d-m- Y") }}
+                                                                </strong></a>
+                                                        {% elseif operation.echeance|date_modify("-1 month")<= date() %}
+                                                            <a style=" color: orange">{{ "Echéance: "~operation.echeance|date("d-m- Y") }}
+                                                            </a>
+                                                        {% elseif operation.echeance|date_modify("-1 month")> date() %}
+                                                            <a style=" color: #31f38f">{{ "Echéance: "~operation.echeance|date("d-m- Y") }}
+                                                            </a>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    <a href="{{ path('maintenance_bateau_edit', {'id': operation.id}) }}" data-toggle="tooltip"
+                                                       data-placement="top"
+                                                       title="Modifier la maintenance {{ operation.designation }}">
+                                                        <i class="bi-pencil-fill" ></i>
+                                                    </a>
+                                                {% endif %}
+                                                {% if operation %}
+                                                    <p style="color: #87cefa" id="fournitures">
+                                                        {{ operation.fourniture|nl2br }}
+                                                    </p>
+                                                {% endif %}
+                                                {% set rang = rang + 1 %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    Pas de maintenances prévues
+                                {% endif %}
+                                <a href="{{ path('maintenance_bateau_new', {'bateauMaintenuId': bateau.id}) }}"
+                                   data-toggle="tooltip"
+                                   data-placement="top"
+                                   title="Ajouter une maintenance à la coque {{ bateau.nom }}">
+                                    <i class="bi-plus-circle-fill"></i>
+                                </a>
+                            </maintenance>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    {% endif %}
+{% endblock %}

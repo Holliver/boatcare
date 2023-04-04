@@ -1,0 +1,31 @@
+<div id="maintenance">
+    <strong>{{ maintenance.designation }}</strong>
+    {% if maintenance.rythme %} ({{ maintenance.rythme }})
+    {% endif %}
+
+    {% if maintenance.fourniture %}<br>
+        <span style="color: #87cefa">{{ maintenance.fourniture|nl2br }}</span>
+
+    {% endif %}
+    {% if maintenance.faitle %}<br>
+        {{ " fait le: "~maintenance.faitle |date("d-m- Y") }}
+    {% endif %}
+    {% if maintenance.echeance %}
+        {% if  maintenance.echeance < date() %}
+            <a style=" color: red"><strong>Echéance:{{ maintenance.echeance|date("d-m- Y") }}
+                </strong></a>
+        {% elseif maintenance.echeance|date_modify("-1 month")<= date() %}
+            <a style=" color: orange">Echéance: {{ maintenance.echeance|date("d-m- Y") }}
+            </a>
+        {% elseif maintenance.echeance|date_modify("-1 month")> date() %}
+            <a style=" color: #66e291">Echéance:{{ maintenance.echeance|date("d-m- Y") }}
+            </a>
+        {% endif %}
+
+    {% endif %}
+    <a href="{{ path("maintenance_"~maintenance.categorieMaintenance~"_edit"  , {'id': maintenance.id}) }}" data-toggle="tooltip"
+       data-placement="top"
+       title="Modifier la maintenance {{ maintenance.designation }}">
+        <i class="bi-pencil-fill"></i>
+    </a>
+</div>

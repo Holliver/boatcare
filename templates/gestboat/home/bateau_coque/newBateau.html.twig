@@ -1,0 +1,15 @@
+{% extends '../../../base.html.twig' %}
+
+
+{% block body %}
+    <div class="container">
+    <h4>Ajouter un nouveau bateau</h4>
+
+    {{ form_start(formBateau) }}
+
+    {{ form_row(formBateau) }}
+    <button type="submit" class="btn btn-success">Sauvegarder le nouveau bateau</button>
+
+    {{ form_end(formBateau) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New DocAdministration{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="col-md-6">
+            <h4>Ajouter un pdf justificatif à visualiser</h4>
+
+            {{ include('doc_administration/_form.html.twig') }}
+
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}New Maintenance Voile{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h5 style=" color: gold;background: #022241;">{{ "Ajouter une maintenance pour la voile: &nbsp &nbsp "  }}{{  app.request.get('denomination') }}</h5>
+            {{ include('maintenance_voile/echeanceFormVoile.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

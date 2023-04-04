@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit MaterielSecuriteLegal{% endblock %}
+
+{% block body %}
+    <h4>Edit MaterielSecuriteLegal</h4>
+
+    {{ include('materiel_securite_legal/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('materiel_securite_legal_index') }}">back to list</a>
+
+    {{ include('materiel_securite_legal/_delete_form.html.twig') }}
+{% endblock %}

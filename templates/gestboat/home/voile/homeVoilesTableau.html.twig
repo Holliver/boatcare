@@ -1,0 +1,70 @@
+{% block body %}
+    {% if bateau.voiles|length == 0 and bateau.type == "Voilier" %}
+        <p>
+            <a href="{{ path('voile_new', {'bateauId': bateau.id}) }}"
+               data-tbs-oggle="tooltip"
+               data-bs-placement="top"
+               title="Ajouter une voile à {{ bateau.nom }}">
+                <i class="bi-plus-circle-fill"></i>
+            </a>
+        </p>
+    {% endif %}
+
+    {% for voile in bateau.voiles %}
+        <table style="width: 100%" class="table table-bordered">
+            <tr>
+                <td style="width: 40%;">
+                    <div style="font-weight: bold" class="text-left">{{ voile.denomination}}
+                        {% if voile.surface %}{{ ' de ' }}{{~voile.surface~' m²'}}{% endif %}
+                        {% if voile.matiere %}{{ ' en ' }}{{voile.matiere}}{% endif %}
+
+
+                        {% if voile.anneeFabrication %}{{ ' de ' }}{{ voile.anneeFabrication }}
+                        {% endif %}
+                    </div>
+
+                    <div class="mesures">
+                        <div class="p-1  text-left">
+                            {% if voile.longueurGuindant %}{{ 'Guindant:  ' }}{{ voile.longueurGuindant|number_format(2, '.', ',') }}{{ 'm' }}
+                                <br>{% endif %}
+                            {% if voile.longueurChute %}{{ 'Chute:  ' }}{{ voile.longueurChute|number_format(2, '.', ',') }}{{ 'm' }}
+                                <br>{% endif %}
+                            {% if voile.longueurBordure %}{{ 'Bordure:  ' }}{{ voile.longueurBordure|number_format(2, '.', ',') }}{{ 'm' }}{% endif %}
+
+
+                        </div>
+
+                    </div>
+                    <a href="{{ path('voile_edit', {'id': voile.id }) }}"
+                       data-tbs-oggle="tooltip"
+                       data-bs-placement="top"
+                       title="Modifier les caractéristiques de la voile">
+                        <i class="bi-pencil-fill" style="float: right;"></i>
+                    </a>
+                </td>
+                <td>
+                    <maintenance>
+                        {% if voile.maintenanceVoiles|length>0 %}
+{#                            {% set rang = 1 %}#}
+                            {% for maintenance in voile.maintenanceVoiles %}
+
+                                {% include '/templates/maintenance/maintenance.html.twig' %}
+
+                            {% endfor %}
+                        {% else %}
+                            Pas de maintenances prévues
+                        {% endif %}
+                            <a data-bs-placement="top"
+                               data-tbs-oggle="tooltip"
+                               href="{{ path('maintenance_voile_new', {'voileId': voile.id, 'denomination': voile.denomination}) }}"
+                               title="Ajouter une maintenance {{ voile.denomination }}">
+                                <i class="bi-plus-circle-fill" ></i>
+                            </a>
+
+                    </maintenance>
+                </td>
+            </tr>
+        </table>
+    {% endfor %}
+
+{% endblock %}

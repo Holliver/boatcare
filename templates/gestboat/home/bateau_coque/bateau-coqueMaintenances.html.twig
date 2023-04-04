@@ -1,0 +1,44 @@
+<div class="accordion-item">
+    <div class="accordion-header" id="panelsStayOpen-bateau">
+                <span id="etiquetteAccordeon" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#panelsStayOpen-collapseBateau"
+                      aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                    {% for maintenance in bateau.maintenanceBateaus %}
+                        {% if maintenance.echeance is not null and maintenance.echeance < date() %}
+                            {% set nbreWarningBateauCoque = nbreWarningBateauCoque +1 %}
+                        {% endif %}
+                    {% endfor %}
+                    <h4>Bateau - Coque</h4>
+                    <div style="color: red;display: inline;padding-left: 20px">
+                    {% if nbreWarningBateauCoque > 0 %}
+                        {{ nbreWarningBateauCoque ~" échéances dépassées" }}
+
+                    {% else %}
+                        <i class="bi bi-check-square-fill" style="font-size: 2rem; color: green;"></i>
+                    {% endif %}
+                    </div>
+                </span>
+    </div>
+    <div id="panelsStayOpen-collapseBateau"
+            {% if rubrique == "bateau" %}
+                class="accordion-collapse collapse show"
+            {% else %}
+                class="accordion-collapse collapse"
+            {% endif %}
+         aria-labelledby="panelsStayOpen-bateau">
+        <div class="accordion-body">
+            {% if nbreWarningBateauCoque == 0 %}
+                <div style="color: green;display: inline;">
+                    {{ "Tout est à jour" }}
+                </div>
+            {% elseif nbreWarningBateauCoque > 0 %}
+                <div style="color: red;display: inline;">
+                    {{ nbreWarningBateauCoque ~" échéances dépassées" }}
+                </div>
+            {% endif %}
+            {% if bateau|length > 0 %}
+                {% include 'gestboat/home/bateau_coque/homeBateauTableauMaintenance.html.twig' %}
+            {% endif %}
+        </div>
+    </div>
+</div>

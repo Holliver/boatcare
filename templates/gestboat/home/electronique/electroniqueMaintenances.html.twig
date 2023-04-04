@@ -1,0 +1,48 @@
+<div class="accordion-item">
+    <div class="accordion-header" id="panelsStayOpen-headingElectronique">
+            <span id="etiquetteAccordeon" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#panelsStayOpen-collapseElectronique"
+                  aria-expanded="true" aria-controls="panelsStayOpen-collapseElectronique">
+                {% for electronique in bateau.electroniques %}
+                    {% for maintenance in electronique.maintenanceElectroniques %}
+                        {% if maintenance.echeance is not null and maintenance.echeance < date() %}
+                            {% set nbreWarningElectronique = nbreWarningElectronique +1 %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                <h4>Electronique</h4>
+                 <span id="quantite">
+                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp {{ bateau.electroniques|length }}
+                </span>
+                <div style="color: red;display: inline;padding-left: 20px">
+                    {% if nbreWarningElectronique > 0 %}
+                        {{ nbreWarningElectronique ~" échéances dépassées" }}
+                    {% else %}<i class="bi bi-check-square-fill" style="font-size: 2rem; color: green;"></i>
+                    {% endif %}
+                </div>
+            </span>
+    </div>
+    <div id="panelsStayOpen-collapseElectronique"
+            {% if rubrique == "electronique" %}
+                class="accordion-collapse collapse show"
+            {% else %}
+                class="accordion-collapse collapse"
+            {% endif %}
+         aria-labelledby="panelsStayOpen-headingElectronique">
+        <div class="accordion-body">
+            <a style="display: inline;" href="{{ path('electronique_new', {'id': bateau.id}) }}"
+               data-bs-toggle="tooltip"
+               data-bs-placement="top"
+               title="Ajouter un appareil electronique pour  {{ bateau.nom }}">
+                <i class="bi-plus-circle-fill"></i>
+            </a>
+            <div class="card-body">
+                <electronique>
+                    {% if bateau.electroniques|length > 0 %}
+                        {% include 'gestboat/home/electronique/homeElectroniquesTableau.html.twig' %}
+                    {% endif %}
+                </electronique>
+            </div>
+        </div>
+    </div>
+</div>

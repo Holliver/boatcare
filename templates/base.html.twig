@@ -1,19 +1,71 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Boat Care!{% endblock %}</title>
+    {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
-        {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
-        {% endblock %}
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
 
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
-</html>
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{{ path('home') }}">
+        {% if not app.user %}
+            {{ "Gestboat" }}
+        {% else %}
+            {{ "Gestboat" }}
+        {% endif %}
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+            {% if  app.user is none %}
+                <li class="nav-item">
+                    <a href="{{ path('login') }}" class="nav-link">Connexion</a>
+                </li>
+            {% endif %}
+        </ul>
+        <ul class="navbar-nav mr-auto">
+            {% if  app.user %}
+                <li class="nav-item">
+                    <a href="{{ path('inventaire') }}" class="nav-link">Inventaire</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+    {# <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <button style="font-size: small" class="btn-info" type="button" onclick="expand()">Tout déployer</button>
+                </li>
+            </ul>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <button style="font-size: small" class="btn-info" type="button" onclick="collapse()">Tout fermer</button>
+                </li>
+            </ul>
+        </div> #}
+</nav>
+<div class="container">
+    {% for rubrique, messages in app.flashes %}
+        <div class="alert alert-{{ rubrique }}">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+
+{% block body %}{% endblock %}
+
+</body>

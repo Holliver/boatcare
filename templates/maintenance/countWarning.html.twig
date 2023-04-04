@@ -1,0 +1,5 @@
+{% for maintenance in bateau.maintenanceBateaus %}
+    {% if maintenance.echeance is not null and maintenance.echeance < date() %}
+        {% set nbreWarningBateauCoque = nbreWarningBateauCoque +1 %}
+    {% endif %}
+{% endfor %}

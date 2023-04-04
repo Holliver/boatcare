@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Administration{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Créer les données administratives</h4>
+                {{ include('gestboat/home/administration/_form.html.twig') }}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

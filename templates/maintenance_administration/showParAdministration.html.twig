@@ -1,0 +1,37 @@
+{% block body %}
+    <div id="entretien">
+        {% set rang = 1 %}
+        {% for operation in operations %}
+            <div class="operation">
+                <strong>{{ operation.designation|upper }}</strong>{% if operation.rythmebateau %} ({{ operation.rythmebateau }})
+                {% if operation.echeance %}
+                    {% if  operation.echeance < date() %}
+                        <a style=" color: red"><strong>{{ "Echéance: "~operation.echeance|date("d-m- Y") }}
+                            </strong></a>
+                    {% elseif operation.echeance|date_modify("-1 month")<= date() %}
+                        <a style=" color: orange">{{ "Echéance: "~operation.echeance|date("d-m- Y") }}
+                        </a>
+                    {% elseif operation.echeance|date_modify("-1 month")> date() %}
+                        <a style=" color: #1f7c8b">{{ "Echéance: "~operation.echeance|date("d-m- Y") }}
+                        </a>
+                    {% endif %}
+                {% endif %}
+                <a href="{{ path('maintenance_administration_edit', {'id': operation.id}) }}" data-toggle="tooltip"
+                   data-placement="top"
+                   title="Modifier la maintenance {{ operation.designation }}">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </a>
+                {% endif %}
+                {% set rang = rang + 1 %}
+            </div>
+            {% if operation.administration.docAdministrations|length >0 %}
+                <a href="{{ path('maintenance_administration_new',{'administrationId': operation.administration.id}) }}"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title="Créer une échéance administrative pour {{  operation.administration.bateau.nom }}">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

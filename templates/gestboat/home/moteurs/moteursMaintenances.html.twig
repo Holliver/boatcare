@@ -1,0 +1,51 @@
+<div class="accordion-item">
+    <div class="accordion-header" id="panelsStayOpen-headingMoteurs">
+            <span id="etiquetteAccordeon" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#panelsStayOpen-collapseMoteurs"
+                  aria-expanded="true" aria-controls="panelsStayOpen-collapseMoteurs">
+
+                {% for moteur in bateau.moteurs %}
+                    {% for maintenance in moteur.maintenanceMoteurs %}
+                        {% if maintenance.echeance is not null and maintenance.echeance < date() %}
+                            {% set nbreWarningMoteurs = nbreWarningMoteurs +1 %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                <h4>Moteurs</h4>
+                 <span id="quantite">
+                     &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp&nbsp &nbsp &nbsp&nbsp&nbsp {{ bateau.moteurs|length }}
+                </span>
+                <div style="color: red;display: inline;padding-left: 20px">
+                    {% if nbreWarningMoteurs > 0 %}
+                        {{ nbreWarningMoteurs ~" échéances dépassées" }}
+                    {% else %}
+                        <i class="bi bi-check-square-fill" style="font-size: 2rem; color: green;"></i>
+                    {% endif %}
+                </div>
+            </span>
+    </div>
+    <div id="panelsStayOpen-collapseMoteurs"
+            {% if rubrique == "moteurs" %}
+                class="accordion-collapse collapse show"
+            {% else %}
+                class="accordion-collapse collapse"
+            {% endif %}
+         aria-labelledby="panelsStayOpen-headingMoteurs">
+        <div class="accordion-body">
+            <a style="display: inline;" href="{{ path('moteur_new', {'bateauId': bateau.id}) }}"
+               data-bs-toggle="tooltip"
+               data-bs-placement="top"
+               title="Ajouter une moteur pour  {{ bateau.nom }}">
+                <i class="bi-plus-circle-fill"></i>
+            </a>
+            <a style="float: right;;color: #28bc9c">{{ bateau.moteurs|length }}</a>
+            <div class="card-body">
+                <moteur>
+                    {% if bateau.moteurs|length > 0 %}     <i class="bi-alarm-clock"></i>
+                        {% include 'gestboat/home/moteurs/homeMoteurs1Tableau.html.twig' %}
+                    {% endif %}
+                </moteur>
+            </div>
+        </div>
+    </div>
+</div>
